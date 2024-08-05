@@ -79,6 +79,36 @@ char **tokenize_input(char *line)
 }
 
 /**
+ * find_command - Tries to find the command in common directories
+ * @command: The command to find
+ *
+ * Return: The full path of the command if found, else NULL
+ */
+char *find_command(char *command)
+{
+    char *paths[] = {"/bin", "/usr/bin", NULL};
+    char *full_path = malloc(BUFFER_SIZE);
+    int i = 0;
+
+    if (!full_path)
+    {
+        fprintf(stderr, "allocation error\n");
+        return (NULL);
+    }
+
+    while (paths[i])
+    {
+        snprintf(full_path, BUFFER_SIZE, "%s/%s", paths[i], command);
+        if (access(full_path, X_OK) == 0)
+            return (full_path);
+        i++;
+    }
+
+    free(full_path);
+    return (NULL);
+}
+
+/**
  * execute - Executes a command
  * @args: The command and its arguments
  *
@@ -88,12 +118,25 @@ int execute(char **args)
 {
     pid_t pid;
     int status;
+    char *cmd_path;
+
+    if (args[0] == NULL)
+        return (1); /* An empty command was entered */
+
+    if (access(args[0], X_OK) == 0) {
+        cmd_path = args[0]; /* Command is an absolute path */
+    } else {
+        cmd_path = find_command(args[0]); /* Search for the command in common directories */
+    }
+
+    if (cmd_path == NULL)
+        return (-1);
 
     pid = fork();
     if (pid == 0)
     {
         /* Child process */
-        if (execve(args[0], args, NULL) == -1)
+        if (execve(cmd_path, args, NULL) == -1)
         {
             perror("./shell");
         }
@@ -112,6 +155,9 @@ int execute(char **args)
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 
+    if (cmd_path != args[0]) {
+        free(cmd_path); /* Only free if it was dynamically allocated */
+    }
     return (status == 0) ? 0 : -1;
 }
 

@@ -10,6 +10,7 @@ char *read_input(void);
 char **tokenize_input(char *input);
 int execute(char **args);
 void free_mem(char *input, char **tokens);
+char *find_command(char *command);
 
 #endif /* SHELL_H */
 

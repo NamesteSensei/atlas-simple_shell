@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>  /* Include string.h for strcmp */
 #include "shell.h"
 
 /**
@@ -34,10 +35,16 @@ int main(void)
             free(tokens);
             continue; /* Continue to the next command */
         }
+        if (strcmp(tokens[0], "exit") == 0) /* Handle built-in exit command */
+        {
+            free(input);
+            free(tokens);
+            break; /* Exit the loop */
+        }
         last_status = execute(tokens); /* Execute the command */
         if (last_status == -1) /* Handle execution failure */
         {
-            printf("Error: Command not found\n");
+            printf("./shell: %s: Command not found\n", tokens[0]);
         }
         free(input);
         free(tokens);
