@@ -1,13 +1,13 @@
 isatty(0)                                        = 0
-getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = 22
-malloc(8192)                                     = 0x5580c5b27330
-strtok("../../hbtn_ls/ls /var\n", " \t\r\n\a")   = "../../hbtn_ls/ls"
+getline(0x7ffd9b697388, 0x7ffd9b697390, 0x7fad36412aa0, 0x7ffd9b697390) = 27
+malloc(8192)                                     = 0x55a7dec78330
+strtok("../../hbtn_ls/hbtn_ls /var\n", " \t\r\n\a") = "../../hbtn_ls/hbtn_ls"
 strtok(nil, " \t\r\n\a")                         = "/var"
 strtok(nil, " \t\r\n\a")                         = nil
-strcmp("../../hbtn_ls/ls", "exit")               = -55
-access("../../hbtn_ls/ls", 1)                    = 0
-fork()                                           = 979
-waitpid(979, 0x7fff4a5a4fa8, 2backups
+strcmp("../../hbtn_ls/hbtn_ls", "exit")          = -55
+access("../../hbtn_ls/hbtn_ls", 1)               = 0
+fork()                                           = 1042
+waitpid(1042, 0x7ffd9b697388, 2backups
 cache
 lib
 local
@@ -21,14 +21,9 @@ tmp
 www
  <no return ...>
 --- SIGCHLD (Child exited) ---
-<... waitpid resumed> )                          = 979
-free(0x5580c5b262a0)                             = <void>
-free(0x5580c5b27330)                             = <void>
-getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = 1
-malloc(8192)                                     = 0x5580c5b27330
-strtok("\n", " \t\r\n\a")                        = nil
-free(0x5580c5b262a0)                             = <void>
-free(0x5580c5b27330)                             = <void>
-getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = -1
-free(0x5580c5b262a0)                             = <void>
+<... waitpid resumed> )                          = 1042
+free(0x55a7dec772a0)                             = <void>
+free(0x55a7dec78330)                             = <void>
+getline(0x7ffd9b697388, 0x7ffd9b697390, 0x7fad36412aa0, 0x7ffd9b697390) = -1
+free(0x55a7dec772a0)                             = <void>
 +++ exited (status 0) +++

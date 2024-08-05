@@ -1,2 +1,1 @@
-../../hbtn_ls/ls /var
-
+../../hbtn_ls/hbtn_ls /var
