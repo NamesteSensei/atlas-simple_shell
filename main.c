@@ -25,12 +25,8 @@ int main(void)
 		input = read_input(); /* Read input from the user */
 		if (input == NULL) /* Handle end-of-file (Ctrl+D) */
 		{
-			if (check_EOF() == 1) /* Check for EOF */
-			{
-				printf("Exiting shell...\n");
-				exit(EXIT_SUCCESS); /* Exit gracefully */
-			}
-			continue; /* Continue to the next command */
+			printf("Exiting shell...\n");
+			exit(EXIT_SUCCESS); /* Exit gracefully */
 		}
 		token_count = tokenize_input(input, &tokens); /* Tokenize the input */
 		if (token_count == -1) /* Handle tokenization failure */

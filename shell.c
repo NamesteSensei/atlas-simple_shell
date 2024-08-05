@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <errno.h>
 #include "shell.h"
 
 #define BUFFER_SIZE 1024
@@ -31,8 +32,11 @@ char *read_input(void)
 
 	if (getline(&line, &bufsize, stdin) == -1)
 	{
-		if (feof(stdin))
+		if (errno == EINTR || errno == EIO)
+		{
+			free(line);
 			return (NULL);
+		}
 		else
 		{
 			perror("read_input");
@@ -173,15 +177,5 @@ void free_mem(char *input, char **tokens)
 {
 	free(input);
 	free(tokens);
-}
-
-/**
- * check_EOF - Checks for end-of-file (Ctrl+D)
- *
- * Return: 1 if EOF is detected, 0 otherwise
- */
-int check_EOF(void)
-{
-	return (feof(stdin));
 }
 
