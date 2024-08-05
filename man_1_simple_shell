@@ -1,0 +1,21 @@
+```man
+.TH man 1 "August 2023" "1.0" "simple_shell"
+.SH NAME
+simple_shell \- A simple UNIX command interpreter
+.SH SYNOPSIS
+.B hsh
+.SH DESCRIPTION
+.B hsh
+is a simple UNIX command interpreter that replicates the functionality of the
+.B sh
+shell.
+.SH USAGE
+Interactive mode:
+.PP
+.B ./hsh
+.PP
+Non-Interactive mode:
+.PP
+.B echo "/bin/ls" | ./hsh
+.SH AUTHOR
+Christopher Wright
