@@ -52,8 +52,10 @@ char *read_input(void)
  */
 int tokenize_input(char *line, char ***tokens)
 {
-	int bufsize = BUFFER_SIZE, position = 0;
+	int bufsize = BUFFER_SIZE;
+	int position = 0;
 	char *token;
+	char *end; /* Moved declaration to the beginning of the function */
 
 	*tokens = malloc(bufsize * sizeof(char *));
 	if (!(*tokens))
@@ -62,6 +64,12 @@ int tokenize_input(char *line, char ***tokens)
 		return (-1);
 	}
 
+	/* Strip trailing whitespace */
+	end = line + strlen(line) - 1;
+	while (end > line && (*end == ' ' || *end == '\t' || *end == '\n'))
+		*end-- = '\0';
+
+	/* Tokenize the input line */
 	token = strtok(line, " \t\r\n\a");
 	while (token != NULL)
 	{
