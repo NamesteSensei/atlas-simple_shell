@@ -49,20 +49,11 @@ if [ -f ltrace.log ]; then
     cat ltrace.log
 fi
 
-# Expected output, excluding extra files
-EXPECTED_OUTPUT=$(cat <<EOF
-AUTHORS
-README.md
-hsh
-main.c
-man_1_simple_shell
-shell.c
-shell.h
-EOF
-)
+# Expected output for /bin/ls /var
+EXPECTED_OUTPUT=$(ls /var)
 
-# Filter the actual output to remove extra files and prompts
-ACTUAL_OUTPUT=$(grep -v -e 'bin_ls.bash' -e 'checker.bash' -e 'output.txt' -e 'valgrind.log' -e 'ltrace.log' output.txt | grep -v '#cisfun$')
+# Filter the actual output to remove extra prompt lines
+ACTUAL_OUTPUT=$(grep -v '#cisfun$' output.txt)
 
 if [ "$EXPECTED_OUTPUT" = "$ACTUAL_OUTPUT" ]; then
     echo "Output is correct."
