@@ -49,11 +49,9 @@ if [ -f ltrace.log ]; then
     cat ltrace.log
 fi
 
-# Expected output for /bin/ls /var
-EXPECTED_OUTPUT=$(ls /var)
-
-# Filter the actual output to remove extra prompt lines
-ACTUAL_OUTPUT=$(grep -v '#cisfun$' output.txt)
+# Expected output for ls
+EXPECTED_OUTPUT=$(ls)
+ACTUAL_OUTPUT=$(cat output.txt | grep -v '#cisfun$')
 
 if [ "$EXPECTED_OUTPUT" = "$ACTUAL_OUTPUT" ]; then
     echo "Output is correct."
