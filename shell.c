@@ -79,31 +79,37 @@ char **tokenize_input(char *line)
 }
 
 /**
- * find_command - Tries to find the command in common directories
+ * find_command - Tries to find the command in the PATH
  * @command: The command to find
  *
  * Return: The full path of the command if found, else NULL
  */
 char *find_command(char *command)
 {
-    char *paths[] = {"/bin", "/usr/bin", NULL};
-    char *full_path = malloc(BUFFER_SIZE);
-    int i = 0;
+    char *path_env = getenv("PATH");
+    char *path, *full_path = malloc(BUFFER_SIZE);
+    char *path_copy = strdup(path_env);
+    int len;
 
-    if (!full_path)
+    if (!full_path || !path_copy)
     {
         fprintf(stderr, "allocation error\n");
         return NULL;
     }
 
-    while (paths[i])
+    path = strtok(path_copy, ":");
+    while (path != NULL)
     {
-        snprintf(full_path, BUFFER_SIZE, "%s/%s", paths[i], command);
-        if (access(full_path, X_OK) == 0)
+        len = snprintf(full_path, BUFFER_SIZE, "%s/%s", path, command);
+        if (len < BUFFER_SIZE && access(full_path, X_OK) == 0)
+        {
+            free(path_copy);
             return full_path;
-        i++;
+        }
+        path = strtok(NULL, ":");
     }
 
+    free(path_copy);
     free(full_path);
     return NULL;
 }
@@ -121,16 +127,21 @@ int execute(char **args)
     char *cmd_path;
 
     if (args[0] == NULL)
-        return (1); /* An empty command was entered */
+        return 1; /* An empty command was entered */
 
-    if (access(args[0], X_OK) == 0) {
+    if (access(args[0], X_OK) == 0)
+    {
         cmd_path = args[0]; /* Command is an absolute path */
-    } else {
-        cmd_path = find_command(args[0]); /* Search for the command in common directories */
     }
-
-    if (cmd_path == NULL)
-        return (-1);
+    else
+    {
+        cmd_path = find_command(args[0]); /* Search for the command in PATH */
+        if (cmd_path == NULL)
+        {
+            fprintf(stderr, "./shell: %s: Command not found\n", args[0]);
+            return -1;
+        }
+    }
 
     pid = fork();
     if (pid == 0)
@@ -155,7 +166,8 @@ int execute(char **args)
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 
-    if (cmd_path != args[0]) {
+    if (cmd_path != args[0])
+    {
         free(cmd_path); /* Only free if it was dynamically allocated */
     }
     return (status == 0) ? 0 : -1;
