@@ -1,69 +1,34 @@
 isatty(0)                                        = 0
-getline(0x7ffdbc1f4038, 0x7ffdbc1f4040, 0x7fa635f77aa0, 0x7ffdbc1f4040) = 3
-malloc(8192)                                     = 0x560ad9063330
-strtok("ls\n", " \t\r\n\a")                      = "ls"
+getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = 22
+malloc(8192)                                     = 0x5580c5b27330
+strtok("../../hbtn_ls/ls /var\n", " \t\r\n\a")   = "../../hbtn_ls/ls"
+strtok(nil, " \t\r\n\a")                         = "/var"
 strtok(nil, " \t\r\n\a")                         = nil
-strcmp("ls", "exit")                             = 7
-access("ls", 1)                                  = -1
-strncmp("AWS_EXECUTION_ENV=AWS_ECS_FARGAT"..., "PATH=", 5) = -15
-strncmp("AWS_CONTAINER_CREDENTIALS_RELATI"..., "PATH=", 5) = -15
-strncmp("HOSTNAME=88754206600d466281815a6"..., "PATH=", 5) = -8
-strncmp("AWS_DEFAULT_REGION=us-east-1", "PATH=", 5) = -15
-strncmp("AWS_REGION=us-east-1", "PATH=", 5)      = -15
-strncmp("PWD=/atlas-simple_shell", "PATH=", 5)   = 22
-strncmp("ECS_CONTAINER_METADATA_URI_V4=ht"..., "PATH=", 5) = -11
-strncmp("HOME=/root", "PATH=", 5)                = -8
-strncmp("LANG=C", "PATH=", 5)                    = -4
-strncmp("LS_COLORS=rs=0:di=01;34:ln=01;36"..., "PATH=", 5) = -4
-strncmp("ECS_AGENT_URI=http://169.254.170"..., "PATH=", 5) = -11
-strncmp("LESSCLOSE=/usr/bin/lesspipe %s %"..., "PATH=", 5) = -4
-strncmp("TERM=xterm-256color", "PATH=", 5)       = 4
-strncmp("LESSOPEN=| /usr/bin/lesspipe %s", "PATH=", 5) = -4
-strncmp("ECS_CONTAINER_METADATA_URI=http:"..., "PATH=", 5) = -11
-strncmp("SHLVL=2", "PATH=", 5)                   = 3
-strncmp("LC_ALL=C", "PATH=", 5)                  = -4
-strncmp("PATH=/usr/local/sbin:/usr/local/"..., "PATH=", 5) = 0
-strdup("/usr/local/sbin:/usr/local/bin:/"...)    = 0x560ad9065340
-malloc(1024)                                     = 0x560ad9065390
-strtok("/usr/local/sbin:/usr/local/bin:/"..., ":") = "/usr/local/sbin"
-snprintf("/usr/local/sbin/ls", 1024, "%s/%s", "/usr/local/sbin", "ls") = 18
-access("/usr/local/sbin/ls", 1)                  = -1
-strtok(nil, ":")                                 = "/usr/local/bin"
-snprintf("/usr/local/bin/ls", 1024, "%s/%s", "/usr/local/bin", "ls") = 17
-access("/usr/local/bin/ls", 1)                   = -1
-strtok(nil, ":")                                 = "/usr/sbin"
-snprintf("/usr/sbin/ls", 1024, "%s/%s", "/usr/sbin", "ls") = 12
-access("/usr/sbin/ls", 1)                        = -1
-strtok(nil, ":")                                 = "/usr/bin"
-snprintf("/usr/bin/ls", 1024, "%s/%s", "/usr/bin", "ls") = 11
-access("/usr/bin/ls", 1)                         = 0
-free(0x560ad9065340)                             = <void>
-fork()                                           = 947
-waitpid(947, 0x7ffdbc1f4038, 2AUTHORS
-README.md
-bin_ls.bash
-bin_ls_1_arg_1.bash
-checker.bash
-hsh
-ls_.bash
-ltrace.log
-main.c
-man_1_simple_shell
-output.txt
-shell.c
-shell.h
-valgrind.log
+strcmp("../../hbtn_ls/ls", "exit")               = -55
+access("../../hbtn_ls/ls", 1)                    = 0
+fork()                                           = 979
+waitpid(979, 0x7fff4a5a4fa8, 2backups
+cache
+lib
+local
+lock
+log
+mail
+opt
+run
+spool
+tmp
+www
  <no return ...>
 --- SIGCHLD (Child exited) ---
-<... waitpid resumed> )                          = 947
-free(0x560ad9065390)                             = <void>
-free(0x560ad90622a0)                             = <void>
-free(0x560ad9063330)                             = <void>
-getline(0x7ffdbc1f4038, 0x7ffdbc1f4040, 0x7fa635f77aa0, 0x7ffdbc1f4040) = 1
-malloc(8192)                                     = 0x560ad9063330
+<... waitpid resumed> )                          = 979
+free(0x5580c5b262a0)                             = <void>
+free(0x5580c5b27330)                             = <void>
+getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = 1
+malloc(8192)                                     = 0x5580c5b27330
 strtok("\n", " \t\r\n\a")                        = nil
-free(0x560ad90622a0)                             = <void>
-free(0x560ad9063330)                             = <void>
-getline(0x7ffdbc1f4038, 0x7ffdbc1f4040, 0x7fa635f77aa0, 0x7ffdbc1f4040) = -1
-free(0x560ad90622a0)                             = <void>
+free(0x5580c5b262a0)                             = <void>
+free(0x5580c5b27330)                             = <void>
+getline(0x7fff4a5a4fa8, 0x7fff4a5a4fb0, 0x7f77bd6faaa0, 0x7fff4a5a4fb0) = -1
+free(0x5580c5b262a0)                             = <void>
 +++ exited (status 0) +++
