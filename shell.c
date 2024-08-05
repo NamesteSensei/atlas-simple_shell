@@ -7,41 +7,24 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include "shell.h"
 
 #define BUFFER_SIZE 1024
 
-/* Function declarations */
-void prompt(void);
-char *read_line(void);
-char **split_line(char *line);
-int execute(char **args);
-void shell_loop(void);
-
 /**
- * main - Entry point of the shell
- *
- * Return: Always 0.
+ * display_prompt - Displays the prompt
  */
-int main(void)
+void display_prompt(void)
 {
-	shell_loop();
-	return (0);
+	printf("#cisfun$ ");
 }
 
 /**
- * prompt - Displays the prompt
- */
-void prompt(void)
-{
-	printf("($) ");
-}
-
-/**
- * read_line - Reads a line of input from stdin
+ * read_input - Reads a line of input from stdin
  *
  * Return: The line read from stdin
  */
-char *read_line(void)
+char *read_input(void)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
@@ -49,10 +32,10 @@ char *read_line(void)
 	if (getline(&line, &bufsize, stdin) == -1)
 	{
 		if (feof(stdin))
-			exit(EXIT_SUCCESS);
+			return (NULL);
 		else
 		{
-			perror("readline");
+			perror("read_input");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -61,43 +44,76 @@ char *read_line(void)
 }
 
 /**
- * split_line - Splits a line into tokens
+ * tokenize_input - Splits a line into tokens
  * @line: The line to split
+ * @tokens: Array of split tokens
  *
- * Return: An array of tokens
+ * Return: Number of tokens
  */
-char **split_line(char *line)
+int tokenize_input(char *line, char ***tokens)
 {
 	int bufsize = BUFFER_SIZE, position = 0;
-	char **tokens = malloc(bufsize * sizeof(char *));
 	char *token;
 
-	if (!tokens)
+	*tokens = malloc(bufsize * sizeof(char *));
+	if (!(*tokens))
 	{
 		fprintf(stderr, "allocation error\n");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 
 	token = strtok(line, " \t\r\n\a");
 	while (token != NULL)
 	{
-		tokens[position++] = token;
+		(*tokens)[position++] = token;
 
 		if (position >= bufsize)
 		{
 			bufsize += BUFFER_SIZE;
-			tokens = realloc(tokens, bufsize * sizeof(char *));
-			if (!tokens)
+			*tokens = realloc(*tokens, bufsize * sizeof(char *));
+			if (!(*tokens))
 			{
 				fprintf(stderr, "allocation error\n");
-				exit(EXIT_FAILURE);
+				return (-1);
 			}
 		}
 
 		token = strtok(NULL, " \t\r\n\a");
 	}
-	tokens[position] = NULL;
-	return (tokens);
+	(*tokens)[position] = NULL;
+	return (position);
+}
+
+/**
+ * handle_builtins - Handles built-in commands
+ * @tokens: The command and its arguments
+ * @last_status: Exit status of last command
+ *
+ * Return: 0 if the command is a built-in, 1 otherwise
+ */
+int handle_builtins(char **tokens, int last_status)
+{
+	(void)last_status;
+
+	if (tokens[0] == NULL)
+		return (1);
+
+	if (strcmp(tokens[0], "exit") == 0)
+		exit(EXIT_SUCCESS);
+
+	if (strcmp(tokens[0], "cd") == 0)
+	{
+		if (tokens[1] == NULL)
+			fprintf(stderr, "cd: expected argument to \"cd\"\n");
+		else
+		{
+			if (chdir(tokens[1]) != 0)
+				perror("cd");
+		}
+		return (0);
+	}
+
+	return (1);
 }
 
 /**
@@ -111,21 +127,27 @@ int execute(char **args)
 	pid_t pid;
 	int status;
 
+	if (args[0] == NULL)
+		return (1); /* An empty command was entered */
+
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execvp(args[0], args) == -1)
+		/* Child process */
+		if (execve(args[0], args, NULL) == -1)
 		{
-			perror("hsh");
+			perror("./shell");
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-		perror("hsh");
+		/* Error forking */
+		perror("fork");
 	}
 	else
 	{
+		/* Parent process */
 		do {
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
@@ -135,22 +157,23 @@ int execute(char **args)
 }
 
 /**
- * shell_loop - The main loop of the shell
+ * free_mem - Frees allocated memory
+ * @input: The input string
+ * @tokens: Array of tokens
  */
-void shell_loop(void)
+void free_mem(char *input, char **tokens)
 {
-	char *line;
-	char **args;
-	int status;
+	free(input);
+	free(tokens);
+}
 
-	do {
-		prompt();
-		line = read_line();
-		args = split_line(line);
-		status = execute(args);
-
-		free(line);
-		free(args);
-	} while (status);
+/**
+ * check_EOF - Checks for end-of-file (Ctrl+D)
+ *
+ * Return: 1 if EOF is detected, 0 otherwise
+ */
+int check_EOF(void)
+{
+	return (feof(stdin));
 }
 
