@@ -1,0 +1,12 @@
+AUTHORS
+README.md
+bin_ls.bash
+checker.bash
+hsh
+ltrace.log
+main.c
+man_1_simple_shell
+output.txt
+shell.c
+shell.h
+valgrind.log

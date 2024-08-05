@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <string.h>  /* Include string.h for strcmp */
+#include <string.h>
+#include <unistd.h>
 #include "shell.h"
 
 /**
@@ -18,14 +19,17 @@ int main(void)
     char *input = NULL; /* Pointer to input string */
     char **tokens = NULL; /* Array of split input tokens */
     int last_status = 0; /* Exit status of last command */
+    int interactive = isatty(STDIN_FILENO); /* Check if input is from a terminal */
 
     while (1) /* Infinite loop */
     {
-        display_prompt(); /* Display the shell prompt */
+        if (interactive)
+            display_prompt(); /* Display the shell prompt */
         input = read_input(); /* Read input from the user */
         if (input == NULL) /* Handle end-of-file (Ctrl+D) */
         {
-            printf("\n"); /* Print a new line */
+            if (interactive)
+                printf("\n"); /* Print a new line */
             break; /* Exit the loop */
         }
         tokens = tokenize_input(input); /* Tokenize the input */
@@ -44,11 +48,11 @@ int main(void)
         last_status = execute(tokens); /* Execute the command */
         if (last_status == -1) /* Handle execution failure */
         {
-            printf("./shell: %s: Command not found\n", tokens[0]);
+            fprintf(stderr, "./shell: %s: Command not found\n", tokens[0]);
         }
         free(input);
         free(tokens);
     }
-    return (0); /* Exit success */
+    return 0; /* Exit success */
 }
 

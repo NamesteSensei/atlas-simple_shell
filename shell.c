@@ -32,10 +32,10 @@ char *read_input(void)
     if (getline(&line, &bufsize, stdin) == -1)
     {
         free(line);
-        return (NULL);
+        return NULL;
     }
 
-    return (line);
+    return line;
 }
 
 /**
@@ -53,7 +53,7 @@ char **tokenize_input(char *line)
     if (!tokens)
     {
         fprintf(stderr, "allocation error\n");
-        return (NULL);
+        return NULL;
     }
 
     token = strtok(line, " \t\r\n\a");
@@ -68,14 +68,14 @@ char **tokenize_input(char *line)
             if (!tokens)
             {
                 fprintf(stderr, "allocation error\n");
-                return (NULL);
+                return NULL;
             }
         }
 
         token = strtok(NULL, " \t\r\n\a");
     }
     tokens[position] = NULL;
-    return (tokens);
+    return tokens;
 }
 
 /**
@@ -93,19 +93,19 @@ char *find_command(char *command)
     if (!full_path)
     {
         fprintf(stderr, "allocation error\n");
-        return (NULL);
+        return NULL;
     }
 
     while (paths[i])
     {
         snprintf(full_path, BUFFER_SIZE, "%s/%s", paths[i], command);
         if (access(full_path, X_OK) == 0)
-            return (full_path);
+            return full_path;
         i++;
     }
 
     free(full_path);
-    return (NULL);
+    return NULL;
 }
 
 /**

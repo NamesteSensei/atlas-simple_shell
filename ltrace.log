@@ -1,0 +1,33 @@
+isatty(0)                                        = 0
+getline(0x7fff2682e8d8, 0x7fff2682e8e0, 0x7fec89d14aa0, 0x7fff2682e8e0) = 8
+malloc(8192)                                     = 0x55b0cdbea330
+strtok("/bin/ls\n", " \t\r\n\a")                 = "/bin/ls"
+strtok(nil, " \t\r\n\a")                         = nil
+strcmp("/bin/ls", "exit")                        = -54
+access("/bin/ls", 1)                             = 0
+fork()                                           = 797
+waitpid(797, 0x7fff2682e8d8, 2AUTHORS
+README.md
+bin_ls.bash
+checker.bash
+hsh
+ltrace.log
+main.c
+man_1_simple_shell
+output.txt
+shell.c
+shell.h
+valgrind.log
+ <no return ...>
+--- SIGCHLD (Child exited) ---
+<... waitpid resumed> )                          = 797
+free(0x55b0cdbe92a0)                             = <void>
+free(0x55b0cdbea330)                             = <void>
+getline(0x7fff2682e8d8, 0x7fff2682e8e0, 0x7fec89d14aa0, 0x7fff2682e8e0) = 1
+malloc(8192)                                     = 0x55b0cdbea330
+strtok("\n", " \t\r\n\a")                        = nil
+free(0x55b0cdbe92a0)                             = <void>
+free(0x55b0cdbea330)                             = <void>
+getline(0x7fff2682e8d8, 0x7fff2682e8e0, 0x7fec89d14aa0, 0x7fff2682e8e0) = -1
+free(0x55b0cdbe92a0)                             = <void>
++++ exited (status 0) +++
